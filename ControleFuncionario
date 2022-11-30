@@ -1,0 +1,93 @@
+import DAO.FuncionarioDAO;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import model.Funcionario;
+
+/**
+ *
+ * @author migue
+ */
+@WebServlet(name = "ControleFuncionario", urlPatterns = {"/ControleFuncionario"})
+public class ControleFuncionario extends HttpServlet {
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        
+       
+        
+    }
+
+    
+     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+        
+        
+         try
+        {
+          String acao = request.getParameter("acao");
+         if(acao.equals("cadastrar"))
+         {
+             String nome = request.getParameter("txtNome");
+             int idade = Integer.parseInt(request.getParameter("txtIdade"));
+             String cargo = request.getParameter("txtCargo");
+             double salario = Double.parseDouble(request.getParameter("txtSalario"));
+             String telefone = request.getParameter("txtTelefone");
+             String email = request.getParameter("txtEmail");
+             
+             
+             Funcionario funcionario = new Funcionario();
+             funcionario.setIdFunc(idade);
+             funcionario.setNomeFunc(nome);
+             funcionario.setIdade(idade);
+             funcionario.setCargo(cargo);
+             funcionario.setSalario(salario);
+             funcionario.setTelefone(telefone);
+             funcionario.setEmail(email);
+             
+             
+             FuncionarioDAO fundao = new FuncionarioDAO();
+             fundao.cadastrar(funcionario);
+             
+             response.sendRedirect("sucesso.jsp");
+         }else if (acao.equals("listar"))
+         {
+               ////lista ////
+         }
+        }catch (IOException | NumberFormatException e ){
+         request.setAttribute("erro", e);
+         RequestDispatcher rd = request.getRequestDispatcher("ControleFuncionaio.jsp");
+         rd.forward(request, response);
+         
+        }    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+}
+
+
